@@ -1,13 +1,22 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 const Search = () => {
   const [starWarsData, setStarWarsData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [selected, setSelected] = useState([]);
-
   const navigate = useNavigate();
+
+  // Api adatok lekérése
+  useEffect(() => {
+    axios
+      .get("https://akabab.github.io/starwars-api/api/all.json")
+      .then((response) => {
+        setStarWarsData(response.data);
+      });
+  }, []);
 
   const handleFilter = (e) => {
     const searchWord = e.target.value;
@@ -22,25 +31,17 @@ const Search = () => {
     }
   };
 
-  const handleClick = () => {
+  const onClick = () => {
     navigate({
-      pathname: "result",
+      pathname: "Result",
+      search: createSearchParams({
+        id: selected,
+      }).toString(),
     });
   };
 
-  const fetchStarWarsData = (url) => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setStarWarsData(data);
-      });
-  };
-
-  useEffect(() => {
-    fetchStarWarsData("https://akabab.github.io/starwars-api/api/all.json");
-  }, []);
-
   console.log(selected);
+
   return (
     <div className="search">
       <div className="searchInput">
@@ -50,7 +51,9 @@ const Search = () => {
           autoComplete="on"
           onChange={handleFilter}
         />
-        <button type="submit">Search</button>
+        <button type="submit" onClick={onClick}>
+          Search
+        </button>
       </div>
 
       {filterData.length !== 0 && (
@@ -60,13 +63,7 @@ const Search = () => {
               <div key={item.id}>
                 <div
                   onClick={() => {
-                    setSelected([
-                      item.name,
-                      item.born,
-                      item.gender,
-                      item.species,
-                      item.image,
-                    ]);
+                    setSelected([item.id]);
                   }}
                 >
                   {item.name}
