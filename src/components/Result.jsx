@@ -24,8 +24,9 @@ const Result = () => {
   };
 
   return (
-    <div>
-      <h1>Star Wars - People </h1>
+    <div className="result-container">
+      <h1>Star Wars Character</h1>
+
       {data
         .filter((value) => value.id == ide)
         .map((value, key) => {

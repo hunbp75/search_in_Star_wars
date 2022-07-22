@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, createSearchParams } from "react-router-dom";
+import "./search.css";
 
 const Search = () => {
   const [starWarsData, setStarWarsData] = useState([]);
@@ -44,14 +45,16 @@ const Search = () => {
 
   return (
     <div className="search">
-      <div className="searchInput">
+      <h1>Star Wars Character - Search</h1>
+      <div className="input-container">
         <input
+          className="searchInput"
           type="text"
-          placeholder="Search..."
+          placeholder="typing the name"
           autoComplete="on"
           onChange={handleFilter}
         />
-        <button type="submit" onClick={onClick}>
+        <button type="submit" onClick={onClick} className="search-btn">
           Search
         </button>
       </div>
@@ -62,6 +65,7 @@ const Search = () => {
             return (
               <div key={item.id}>
                 <div
+                  className="dataItem"
                   onClick={() => {
                     setSelected([item.id]);
                   }}
